@@ -1,18 +1,40 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Linklist @queryChange="queryChange" />
+  </div>
+  <div>
+    DEBUG: {{ name }}
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import { useRoute, useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { onUpdated } from 'vue'
+import Linklist from '@/components/Linklist'
 
 export default {
-  name: 'Home',
   components: {
-    HelloWorld
-  }
+    Linklist
+  },
+  setup() {
+    const route = useRoute()
+    const router = useRouter()
+
+    const name = ref("")
+    onUpdated(() => {
+      console.log("Simulate fetching updated data using ", route.query.name)
+      name.value = route.query.name
+    })
+
+    function queryChange(a) {
+      router.push({query: {name: a}})
+    }
+
+    return {
+      queryChange,
+      name
+    }    
+  },
 }
 </script>
