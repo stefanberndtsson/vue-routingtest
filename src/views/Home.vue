@@ -1,39 +1,40 @@
 <template>
+  <h1>Home1</h1>
   <div>
-    <Linklist @queryChange="queryChange" />
+    <Linklist @queryChange="queryChange" :name="name" :info="info"/>
   </div>
   <div>
-    DEBUG: {{ name }}
+    DEBUG: {{ JSON.stringify({name, info, role}) }}
   </div>
 </template>
 
 <script>
-import { useRoute, useRouter } from 'vue-router'
-import { ref } from 'vue'
-import { onUpdated } from 'vue'
+import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import Linklist from '@/components/Linklist'
+import { watch } from 'vue'
 
 export default {
   components: {
     Linklist
   },
-  setup() {
-    const route = useRoute()
+  props: ['name', 'info', 'role'],
+  setup(props) {
     const router = useRouter()
+    const route = useRoute()
 
-    const name = ref("")
-    onUpdated(() => {
-      console.log("Simulate fetching updated data using ", route.query.name)
-      name.value = route.query.name
+    watch(() => route.query, (after, before) => {
+      console.log("watch", before, after, route.query, props)
     })
 
-    function queryChange(a) {
-      router.push({query: {name: a}})
+    function queryChange(newQuery) {
+      const old = route.query
+      const query = {...old, ...newQuery}
+      router.push({query})
     }
 
     return {
-      queryChange,
-      name
+      queryChange
     }    
   },
 }

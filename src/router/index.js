@@ -1,11 +1,28 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import Home2 from '../views/Home2.vue'
+
+function queryHandler(route) {
+  console.log("queryHandler", route.query)
+  return {
+    name: route.query.name,
+    info: route.query.info,
+    role: route.query.role
+  }
+}
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    props: queryHandler
+  },
+  {
+    path: '/home2',
+    name: 'Home2',
+    component: Home2,
+    props: queryHandler
   },
   {
     path: '/about',

@@ -1,21 +1,38 @@
 <template>
   <ul>
-    <li><button @click="sendQueryChange('Link 1')">Link 1</button></li>
-    <li><button @click="sendQueryChange('Link 2')">Link 2</button></li>
-    <li><button @click="sendQueryChange('Link 3')">Link 3</button></li>
+    <li><button @click="sendQueryChange1()">Set name</button></li>
+    <li><button @click="sendQueryChange2()">Set info</button></li>
+    <li><button @click="sendQueryChange3()">Clear name</button></li>
+    <li><button @click="sendQueryChange4()">Clear all</button></li>
   </ul>
+  <div>
+    Linktest: DEBUG: {{ JSON.stringify({name, info}) }}
+  </div>
 </template>
 
 <script>
 export default {
   emits: ['queryChange'],
+  props: ['name', 'info'],
   setup(props, {emit}) {
-    function sendQueryChange(param) {
-      emit('queryChange', param)
+    function sendQueryChange1() {
+      emit('queryChange', {name: "Name was set"})
+    }
+    function sendQueryChange2() {
+      emit('queryChange', {info: "Info was set"})
+    }
+    function sendQueryChange3() {
+      emit('queryChange', {name: undefined})
+    }
+    function sendQueryChange4() {
+      emit('queryChange', {name: undefined, info: undefined, role: undefined})
     }
 
     return {
-      sendQueryChange
+      sendQueryChange1,
+      sendQueryChange2,
+      sendQueryChange3,
+      sendQueryChange4,
     }
   },
 }
